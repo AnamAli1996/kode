@@ -7,13 +7,11 @@ import com.finalyearproject.kode.Repository.LevelRepository;
 import com.finalyearproject.kode.Repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.finalyearproject.kode.Entity.Student;
 import com.finalyearproject.kode.Repository.StudentRepository;
 
+import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +20,10 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
     private LevelRepository levelRepository;
 
-    @GetMapping(path="/add")
+    @RequestMapping(method= RequestMethod.POST, value="/add")
     public @ResponseBody String addNewStudent (@RequestParam String firstName,
                                                @RequestParam String lastName,
                                                @RequestParam String email,
@@ -40,7 +39,7 @@ public class StudentController {
         student.setPassword(password);
         student.setDateOfBirth(date);
         Level level1 = levelRepository.findByLevelDescription(level);
-        System.out.println(level1);
+        student.setLevel(level1);
 
         studentRepository.save(student);
         return "Saved";
@@ -51,6 +50,19 @@ public class StudentController {
         // This returns a JSON or XML with the users
         return studentRepository.findAll();
     }
+
+    @GetMapping(path="/{studentID}")
+    public @ResponseBody Student getStudent(@PathVariable("studentID") int id){
+        return studentRepository.findById(id);
+    }
+
+    @GetMapping(path="/login")
+    public @ResponseBody String login(@RequestParam String email,
+                                      @RequestParam String password){
+
+    }
+
+
 
 
     }
