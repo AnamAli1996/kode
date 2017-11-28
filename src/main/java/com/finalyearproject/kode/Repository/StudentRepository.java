@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StudentRepository extends CrudRepository<Student, Long> {
 
-    List<Student> findByFirstName(String firstName);
+    Student findByFirstName(String firstName);
 
     Student findById(int id);
 
