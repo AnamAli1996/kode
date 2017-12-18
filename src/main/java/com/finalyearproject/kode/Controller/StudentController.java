@@ -6,7 +6,10 @@ import com.finalyearproject.kode.Repository.LanguageRepository;
 import com.finalyearproject.kode.Repository.LevelRepository;
 import com.finalyearproject.kode.Repository.ParentRepository;
 import com.finalyearproject.kode.Service.StudentService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/demoStudents")
 public class StudentController {
+
+
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
@@ -30,6 +35,8 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/add")
@@ -76,6 +83,8 @@ public class StudentController {
     public @ResponseBody HashMap<String, Object> getStudent(@RequestParam String email,
                                             @RequestParam String password) {
       Student student = studentRepository.findByEmailAndPassword(email, password);
+        String jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
         HashMap<String, String> students = new HashMap<String, String>();
         students.put("email", student.getEmail());
@@ -83,6 +92,7 @@ public class StudentController {
         students.put("firstName", student.getFirstName());
         students.put("lastName", student.getLastName());
         students.put("password", student.getPassword());
+        students.put("webToken", jwtToken);
         HashMap<String, Object> loggedinStudent = new HashMap<String, Object>();
         loggedinStudent.put("user", students);
         return loggedinStudent;
