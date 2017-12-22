@@ -16,9 +16,11 @@ public class Parent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String parentOne;
-    private String parentTwo;
-    private String familyName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private int age;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     private List<Student> students;
@@ -29,34 +31,57 @@ public class Parent {
     }
 
 
-    public Parent(String parentOne, String parentTwo, String familyName) {
+    public Parent(String firstName, String lastName, String email, String password, int age) {
         super();
-        this.parentOne = parentOne;
-        this.parentTwo = parentTwo;
-        this.familyName = familyName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+
     }
 
     public int getId() {return id;}
     public void setId(int id) { this.id = id;}
 
-    public String getParentOne() { return parentOne; }
-
-
-    public void setParentOne(String p1) {
-        this.parentOne = p1;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getParentTwo() { return parentTwo; }
-
-
-    public void setParentTwo(String p2) {
-        this.parentTwo = p2;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
-    public String getFamilyName() { return familyName; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public void setFamilyName(String fn) {
-        this.familyName = fn;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Student> getStudents() {

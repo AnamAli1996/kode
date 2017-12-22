@@ -15,7 +15,7 @@ public class Student {
     private String lastName;
     private String email;
     private String password;
-    private Date dateOfBirth;
+    private int age;
 
 
     @ManyToOne
@@ -37,13 +37,13 @@ public class Student {
     }
 
 
-    public Student(String firstName,String lastName, String email, String password, Date dateOfBirth){
+    public Student(String firstName,String lastName, String email, String password,int age){
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.dateOfBirth = dateOfBirth;
+        this.age = age;
     }
 
     public int getId() {
@@ -70,12 +70,12 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public int getAge() {
+        return age;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getPassword() {

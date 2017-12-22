@@ -6,31 +6,31 @@ import com.finalyearproject.kode.Repository.MentorRepository;
 import com.finalyearproject.kode.Repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
 @Controller
-@RequestMapping(path="/demoMentors")
+@RequestMapping(path="/Mentor")
 public class MentorController {
 
     @Autowired
     private MentorRepository mentorRepository;
 
-    @GetMapping(path="/add")
+    @RequestMapping(method = RequestMethod.POST, value = "/add")
     public @ResponseBody
-    String addNewMentor(@RequestParam String name,
-                        @RequestParam int age,
-                        @RequestParam int yearsExperience) {
+    String addNewMentor(@RequestParam String firstName,
+                        @RequestParam String lastName,
+                        @RequestParam String email,
+                        @RequestParam String password,
+                        @RequestParam int age) {
         Date d = new Date();
         Mentor mentor = new Mentor();
-        mentor.setName(name);
+        mentor.setFirstName(firstName);
         mentor.setAge(age);
-        mentor.setDateJoined(d);
-        mentor.setYearsExperience(yearsExperience);
+        mentor.setEmail(email);
+        mentor.setLastName(lastName);
+        mentor.setPassword(password);
 
         mentorRepository.save(mentor);
         return "Saved";

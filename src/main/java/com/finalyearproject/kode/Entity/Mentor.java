@@ -12,10 +12,11 @@ public class Mentor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String Name;
-    private int Age;
-    private Date dateJoined;
-    private int yearsExperience;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private int age;
 
     @ManyToMany
     List<Student> studentList;
@@ -31,12 +32,13 @@ public class Mentor {
     }
 
 
-    public Mentor(String Name, int Age, Date dateJoined, int yearsExperience) {
+    public Mentor(String firstName,String lastName, String email, String password,int age) {
         super();
-        this.Name = Name;
-        this.Age = Age;
-        this.dateJoined = dateJoined;
-        this.yearsExperience = yearsExperience;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.age = age;
 
     }
 
@@ -54,35 +56,44 @@ public class Mentor {
         this.languageList = languages;
     }
 
-    public String getName()
-    {
-        return Name; }
-
-    public void setName(String name) {
-        this.Name = name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public int getAge()
-    { return Age; }
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
 
     public void setAge(int age) {
-        this.Age = age;
+        this.age = age;
     }
 
-    public Date getDateJoined()
-    { return dateJoined;
-        }
-
-    public void setDateJoined(Date date) {
-        this.dateJoined = date;
+    public String getPassword() {
+        return password;
     }
 
-    public int getYearsExperience() {
-        return yearsExperience;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setYearsExperience(int yearsExperience){
-        this.yearsExperience = yearsExperience;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Parent> getParentList() {

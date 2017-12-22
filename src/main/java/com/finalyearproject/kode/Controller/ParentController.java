@@ -1,28 +1,34 @@
 package com.finalyearproject.kode.Controller;
+import com.finalyearproject.kode.Entity.Mentor;
 import com.finalyearproject.kode.Entity.Parent;
 import com.finalyearproject.kode.Repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @Controller
-@RequestMapping(path="/demoParents")
+@RequestMapping(path="/Parent")
 public class ParentController {
     @Autowired
     private ParentRepository parentRepository;
 
-    @GetMapping(path="/add")
+    @RequestMapping(method = RequestMethod.POST, value = "/add")
     public @ResponseBody
-    String addNewParent(@RequestParam String parentOne,
-                        @RequestParam String parentTwo,
-                        @RequestParam String familyName) {
+    String addNewParent(@RequestParam String firstName,
+                        @RequestParam String lastName,
+                        @RequestParam String email,
+                        @RequestParam String password,
+                        @RequestParam int age) {
+        Date d = new Date();
         Parent parent = new Parent();
-        parent.setParentOne(parentOne);
-        parent.setParentTwo(parentTwo);
-        parent.setFamilyName(familyName);
+        parent.setFirstName(firstName);
+        parent.setAge(age);
+        parent.setEmail(email);
+        parent.setLastName(lastName);
+        parent.setPassword(password);
+
         parentRepository.save(parent);
         return "Saved";
     }

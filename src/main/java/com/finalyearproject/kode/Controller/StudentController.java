@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(path="/demoStudents")
+@RequestMapping(path="/Student")
 public class StudentController {
 
 
@@ -45,18 +45,17 @@ public class StudentController {
                          @RequestParam String lastName,
                          @RequestParam String email,
                          @RequestParam String password,
-                         @RequestParam String level) {
+                         @RequestParam int age) {
 
         Student student = new Student();
         Date date = new Date();
         student.setFirstName(firstName);
-        student.setDateOfBirth(date);
+        student.setAge(age);
         student.setEmail(email);
         student.setLastName(lastName);
         student.setPassword(password);
-        student.setDateOfBirth(date);
-        Level level1 = levelRepository.findByLevelDescription(level);
-        student.setLevel(level1);
+        /*Level level1 = levelRepository.findByLevelDescription(level);
+        student.setLevel(level1);*/
 
         studentRepository.save(student);
         return "Saved";
