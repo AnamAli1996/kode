@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.websocket.server.PathParam;
 
 @Controller
-@RequestMapping(path="/demoCourse")
+@CrossOrigin(origins = "http://localhost:3001")
+@RequestMapping(path="/course")
 public class CourseController {
     @Autowired
     private CourseRepository courseRepository;
@@ -51,11 +52,21 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
-    @GetMapping(path = "/course/{name}")
+    @RequestMapping(method = RequestMethod.GET, value = "{name}")
     public @ResponseBody int getCourseByName(@PathVariable("name") String name) {
        Course course = courseRepository.findCoursesByName(name);
        return course.getId();
     }
+
+    @CrossOrigin(origins = "http://localhost:3001")
+    @RequestMapping(method = RequestMethod.GET, value = "showCourse/{id}")
+    public @ResponseBody Course getCourseById(@PathVariable("id") int id) {
+        Course course = courseRepository.findCoursesById(id);
+        return course;
+    }
+
+
+
 
 
 

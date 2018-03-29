@@ -1,26 +1,19 @@
 package com.finalyearproject.kode.Controller;
-import com.finalyearproject.kode.Entity.Language;
-import com.finalyearproject.kode.Entity.Level;
-import com.finalyearproject.kode.Entity.Parent;
-import com.finalyearproject.kode.Repository.LanguageRepository;
-import com.finalyearproject.kode.Repository.LevelRepository;
-import com.finalyearproject.kode.Repository.ParentRepository;
-import com.finalyearproject.kode.Service.StudentService;
+import com.finalyearproject.kode.Entity.*;
+import com.finalyearproject.kode.Repository.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.finalyearproject.kode.Entity.Student;
-import com.finalyearproject.kode.Repository.StudentRepository;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
@@ -30,36 +23,47 @@ public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
-    @Autowired
-    private LevelRepository levelRepository;
 
     @Autowired
-    private StudentService studentService;
+    private CourseRepository courseRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    static int studentId;
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/add")
     public @ResponseBody
-    String addNewStudent(@RequestParam String firstName,
+    ResponseEntity addNewStudent(@RequestParam String firstName,
                          @RequestParam String lastName,
                          @RequestParam String email,
                          @RequestParam String password,
                          @RequestParam int age) {
 
         Student student = new Student();
-        Date date = new Date();
         student.setFirstName(firstName);
         student.setAge(age);
         student.setEmail(email);
         student.setLastName(lastName);
         student.setPassword(password);
-        /*Level level1 = levelRepository.findByLevelDescription(level);
-        student.setLevel(level1);*/
 
-        studentRepository.save(student);
-        return "Saved";
+        HashMap<String, String> errorLogin = new HashMap<>();
+        errorLogin.put("global", "This email already exist!");
+
+        HashMap<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("errors", errorLogin);
+
+        String userEmail = student.getEmail();
+        Student existingUser = studentRepository.findByEmail(userEmail);
+
+        if (existingUser != null) {
+            return new ResponseEntity<Object>(errorResponse, HttpStatus.BAD_REQUEST);
+        } else {
+            studentRepository.save(student);
+            return new ResponseEntity<Object>("saved", HttpStatus.ACCEPTED);
+        }
     }
+
 
 
     @GetMapping(path = "/allStudents")
@@ -68,6 +72,7 @@ public class StudentController {
         // This returns a JSON or XML with the users
         return studentRepository.findAll();
     }
+
 
     @GetMapping(path = "/{studentName}")
     public @ResponseBody
@@ -96,13 +101,18 @@ public class StudentController {
         loggedinStudent.put("user", students);
         return loggedinStudent;
 
+    }
 
-
-
-
-
+    @RequestMapping(method = RequestMethod.GET, value = "/enrollCourse/{id}")
+    public @ResponseBody Student enrollStudent(@PathVariable("id") int courseId){
+        Course course = courseRepository.findCoursesById(courseId);
+        Student student = studentRepository.findById(studentId);
+        student.setCourse(course);
+        studentRepository.save(student);
+        return student;
 
     }
+
 
 }
 

@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
     public Course findCoursesByName(String name);
+    public Course findCoursesById(int courseId);
 }
