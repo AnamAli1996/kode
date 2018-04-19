@@ -16,7 +16,7 @@ public class Student {
     private String email;
     private String password;
     private int age;
-
+    private int blocklyId;
 
     @ManyToOne
     private Mentor mentor;
@@ -29,8 +29,6 @@ public class Student {
 
     @ManyToOne
     private Course course;
-
-    //eiadit.yolasite.com
 
     public Student() {
 
@@ -94,7 +92,7 @@ public class Student {
         this.email = email;
     }
 
- public Level getLevel() {
+    public Level getLevel() {
         return level;
     }
 
@@ -124,6 +122,18 @@ public class Student {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public int getBlocklyId() {
+        return blocklyId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setBlocklyId(int blocklyId) {
+        this.blocklyId = blocklyId;
     }
 }
 

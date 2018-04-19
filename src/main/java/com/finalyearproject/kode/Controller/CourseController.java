@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.websocket.server.PathParam;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/course")
 public class CourseController {
     @Autowired

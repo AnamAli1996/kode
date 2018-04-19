@@ -9,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -35,10 +32,10 @@ public class StudentController {
     @RequestMapping(method = RequestMethod.POST, value = "/add")
     public @ResponseBody
     ResponseEntity addNewStudent(@RequestParam String firstName,
-                         @RequestParam String lastName,
-                         @RequestParam String email,
-                         @RequestParam String password,
-                         @RequestParam int age) {
+                                 @RequestParam String lastName,
+                                 @RequestParam String email,
+                                 @RequestParam String password,
+                                 @RequestParam int age) {
 
         Student student = new Student();
         student.setFirstName(firstName);
@@ -65,7 +62,6 @@ public class StudentController {
     }
 
 
-
     @GetMapping(path = "/allStudents")
     public @ResponseBody
     Iterable<Student> getAllStudents() {
@@ -81,12 +77,12 @@ public class StudentController {
     }
 
 
-
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(method = RequestMethod.POST, value = "login")
-    public @ResponseBody HashMap<String, Object> getStudent(@RequestParam String email,
-                                            @RequestParam String password) {
-      Student student = studentRepository.findByEmailAndPassword(email, password);
+    public @ResponseBody
+    HashMap<String, Object> getStudent(@RequestParam String email,
+                                       @RequestParam String password) {
+        Student student = studentRepository.findByEmailAndPassword(email, password);
         String jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
@@ -104,7 +100,8 @@ public class StudentController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/enrollCourse/{id}")
-    public @ResponseBody Student enrollStudent(@PathVariable("id") int courseId){
+    public @ResponseBody
+    Student enrollStudent(@PathVariable("id") int courseId) {
         Course course = courseRepository.findCoursesById(courseId);
         Student student = studentRepository.findById(studentId);
         student.setCourse(course);
@@ -113,6 +110,21 @@ public class StudentController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{studentId}/addPage/{page}")
+    public @ResponseBody
+    Student addPage(@PathVariable("page") int blockly_id,
+                    @PathVariable("studentId") int id) {
+        Student student = studentRepository.findById(id);
+        student.setBlocklyId(blockly_id);
+        studentRepository.save(student);
+        return student;
+    }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{studentId}/showPage")
+    public @ResponseBody
+    int showPage(@PathVariable("studentId") int id){
+        Student student = studentRepository.findById(id);
+        return student.getBlocklyId();
+    }
 }
 
